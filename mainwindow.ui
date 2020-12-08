@@ -31,11 +31,11 @@
     <property name="currentIndex">
      <number>0</number>
     </property>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="convert">
      <attribute name="title">
-      <string>Convert</string>
+      <string>打包/压缩</string>
      </attribute>
-     <widget class="QLineEdit" name="lineEdit">
+     <widget class="QLineEdit" name="convert_input_source">
       <property name="geometry">
        <rect>
         <x>120</x>
@@ -45,7 +45,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QToolButton" name="toolButton">
+     <widget class="QToolButton" name="convert_source_select_button">
       <property name="geometry">
        <rect>
         <x>630</x>
@@ -60,10 +60,10 @@
        </font>
       </property>
       <property name="text">
-       <string>select...</string>
+       <string>选择...</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_2">
+     <widget class="QLineEdit" name="convert_input_target">
       <property name="geometry">
        <rect>
         <x>120</x>
@@ -73,7 +73,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QToolButton" name="toolButton_2">
+     <widget class="QToolButton" name="convert_target_select_button">
       <property name="geometry">
        <rect>
         <x>630</x>
@@ -88,10 +88,10 @@
        </font>
       </property>
       <property name="text">
-       <string>select...</string>
+       <string>选择...</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_3">
+     <widget class="QLabel" name="convert_target_label">
       <property name="geometry">
        <rect>
         <x>16</x>
@@ -106,10 +106,10 @@
        </font>
       </property>
       <property name="text">
-       <string>target dir</string>
+       <string>目标路径</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_4">
+     <widget class="QLabel" name="convert_source_label">
       <property name="geometry">
        <rect>
         <x>16</x>
@@ -124,15 +124,54 @@
        </font>
       </property>
       <property name="text">
-       <string>source dir</string>
+       <string> 源路径</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="convert_radioButton">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>190</y>
+        <width>191</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>使用哈夫曼编码压缩</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="convert_status_label">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>185</y>
+        <width>351</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>请选择源路径和目标路径</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="convert_start">
+      <property name="geometry">
+       <rect>
+        <x>550</x>
+        <y>240</y>
+        <width>121</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>开始</string>
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab_2">
+    <widget class="QWidget" name="recover">
      <attribute name="title">
-      <string>Recover</string>
+      <string>解包/解压</string>
      </attribute>
-     <widget class="QLineEdit" name="lineEdit_3">
+     <widget class="QLineEdit" name="recover_input_target">
       <property name="geometry">
        <rect>
         <x>120</x>
@@ -142,7 +181,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QToolButton" name="toolButton_3">
+     <widget class="QToolButton" name="recover_source_select_button">
       <property name="geometry">
        <rect>
         <x>630</x>
@@ -157,10 +196,10 @@
        </font>
       </property>
       <property name="text">
-       <string>select...</string>
+       <string>选择...</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_4">
+     <widget class="QLineEdit" name="recover_input_source">
       <property name="geometry">
        <rect>
         <x>120</x>
@@ -170,7 +209,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QToolButton" name="toolButton_4">
+     <widget class="QToolButton" name="recover_target_select_button">
       <property name="geometry">
        <rect>
         <x>630</x>
@@ -185,50 +224,163 @@
        </font>
       </property>
       <property name="text">
-       <string>select...</string>
+       <string>选择...</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="recover_source_label">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>80</y>
+        <width>101</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>.tar文件</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="recover_target_label">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>130</y>
+        <width>101</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>目标路径</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="recover_start">
+      <property name="geometry">
+       <rect>
+        <x>550</x>
+        <y>240</y>
+        <width>121</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>开始</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="recover_status_label">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>185</y>
+        <width>351</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>请选择源路径和目标路径</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="verify">
+     <attribute name="title">
+      <string>文件验证</string>
+     </attribute>
+     <widget class="QToolButton" name="verify_source_button">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>10</y>
+        <width>311</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>选择待验证文件...</string>
+      </property>
+     </widget>
+     <widget class="QTextBrowser" name="source_textBrowser">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>351</width>
+        <height>221</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QTextBrowser" name="target_textBrowser">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>50</y>
+        <width>351</width>
+        <height>221</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="verify_start">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>280</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>开始验证</string>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="verify_target_button">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>10</y>
+        <width>311</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>选择备份文件...</string>
       </property>
      </widget>
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>16</x>
-        <y>80</y>
-        <width>101</width>
-        <height>31</height>
+        <x>20</x>
+        <y>285</y>
+        <width>541</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>11</pointsize>
+        <pointsize>9</pointsize>
        </font>
       </property>
       <property name="text">
-       <string>tarred file</string>
+       <string>-</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>16</x>
-        <y>130</y>
-        <width>101</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>target dir</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_3">
-     <attribute name="title">
-      <string>Verify</string>
-     </attribute>
     </widget>
    </widget>
   </widget>
