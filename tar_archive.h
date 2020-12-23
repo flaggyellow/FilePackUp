@@ -16,7 +16,7 @@ public:
     int add(QString filePath, int type);
     int get();
     TarArchive(QString fileDir, int type);
-    TarArchive();
+//    TarArchive();
     ~TarArchive();
 
 private:

@@ -11,11 +11,11 @@ FileNode::FileNode(QString filePath, int type)
     ptarContents = new TarContents(filePath, type);
 }
 
-FileNode::FileNode()
-    : ptarContents(nullptr)
-    , next(nullptr)
-{
+//FileNode::FileNode()
+//    : ptarContents(nullptr)
+//    , next(nullptr)
+//{}
 
+FileNode::~FileNode(){
+    delete ptarContents;
 }
-
-FileNode::~FileNode(){}

@@ -18,12 +18,12 @@ TarContents::TarContents(QString filePath, int type)
     memcpy(header->mtime, &modified_time, 8);
 }
 
-TarContents::TarContents()
-    : file()
-{
-    header = static_cast<struct TarHeader*>(malloc(sizeof(struct TarHeader)));
-    std::memset(header, 0, sizeof(TarHeader));
-}
+//TarContents::TarContents()
+//    : file()
+//{
+//    header = static_cast<struct TarHeader*>(malloc(sizeof(struct TarHeader)));
+//    std::memset(header, 0, sizeof(TarHeader));
+//}
 
 TarContents::~TarContents()
 {

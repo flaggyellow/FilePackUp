@@ -12,7 +12,5 @@ FileHelper::FileHelper(QString filePath, int type)
     , fileType(type)
 {}
 
-FileHelper::FileHelper(){}
-
-FileHelper::~FileHelper()
-{}
+//FileHelper::FileHelper(){}
+FileHelper::~FileHelper(){}

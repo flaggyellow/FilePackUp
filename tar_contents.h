@@ -39,7 +39,7 @@ class TarContents
 {
 public:
     TarContents(QString filePath, int type);
-    TarContents();
+//    TarContents();
     ~TarContents();
 
     void get_filename();
