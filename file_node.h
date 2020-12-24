@@ -11,7 +11,7 @@ public:
     FileNode *get_next();
     int set_next(FileNode *n);
     FileNode(QString filePath, int type);
-//    FileNode();
+    FileNode(int type);
     ~FileNode();
 private:
     TarContents *ptarContents;

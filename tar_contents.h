@@ -39,7 +39,7 @@ class TarContents
 {
 public:
     TarContents(QString filePath, int type);
-//    TarContents();
+    TarContents(int type);
     ~TarContents();
 
     void get_filename();
@@ -52,7 +52,7 @@ public:
     void set_mtime();
     void set_chksum();
 
-    TarHeader &get_header();
+    TarHeader *get_header();
     FileHelper &get_fileHelper();
 
 private:

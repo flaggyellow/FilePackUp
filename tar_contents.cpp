@@ -1,6 +1,6 @@
 #include "tar_contents.h"
 
-TarHeader &TarContents::get_header(){return *(this->header);}
+TarHeader *TarContents::get_header(){return this->header;}
 FileHelper &TarContents::get_fileHelper(){return this->file;}
 
 
@@ -18,12 +18,12 @@ TarContents::TarContents(QString filePath, int type)
     memcpy(header->mtime, &modified_time, 8);
 }
 
-//TarContents::TarContents()
-//    : file()
-//{
-//    header = static_cast<struct TarHeader*>(malloc(sizeof(struct TarHeader)));
-//    std::memset(header, 0, sizeof(TarHeader));
-//}
+TarContents::TarContents(int type)
+    : file(type)
+{
+    header = static_cast<struct TarHeader*>(malloc(sizeof(struct TarHeader)));
+    std::memset(header, 0, sizeof(TarHeader));
+}
 
 TarContents::~TarContents()
 {

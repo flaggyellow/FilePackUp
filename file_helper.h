@@ -15,7 +15,7 @@ public:
     void writeFile();
     void getFrequency();
     FileHelper(QString filePath, int type);
-//    FileHelper();
+    FileHelper(int type);
     ~FileHelper();
 
     QFile &get_file();

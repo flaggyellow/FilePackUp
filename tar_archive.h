@@ -8,14 +8,16 @@
 
 #define BLOCKSIZE 512
 
+#define NORMALFILE 0
+#define TARFILE 1
+
 class TarArchive
 {
 public:
-    int load();
+    int load(QString fileDir);
     int save(int mode);
-    int add(QString filePath, int type);
-    int get();
-    TarArchive(QString fileDir, int type);
+    int add(QString filePath);
+    TarArchive(QString fileDir);
 //    TarArchive();
     ~TarArchive();
 

@@ -11,9 +11,6 @@
 #include "tools.h"
 #include <iostream>
 
-#define NORMALFILE 0
-#define TARFILE 1
-
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -32,6 +29,7 @@ public slots:
     void fetch_file_path_recover_source();
     void fetch_file_path_recover_target();
     void convert_start();
+    void recover_start();
 //    void recover_start();
 //    void verify_start();
 
