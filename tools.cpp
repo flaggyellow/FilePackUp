@@ -69,3 +69,12 @@ bool isEmptyBlock(char *datablock, int size)
     }
     return true;
 }
+
+int checkMagic(char *magic)
+{
+    char normal[8] = {'N','O','R','M','A','L',0,0};
+    char huffman[8] = {'H','U','F','F','M','A','N',0};
+    if(memcmp(magic, normal, 8) == 0) return 1;
+    else if(memcmp(magic, huffman, 8) == 0) return 2;
+    else return -1;
+}

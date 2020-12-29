@@ -17,5 +17,6 @@ bool isDir(QString filepath);
 int cpQs2Ca(char *to, QString qs);
 int fillOctCa(char *to, long long num);
 bool isEmptyBlock(char *datablock, int size);
+int checkMagic(char *magic);
 
 #endif // TOOLS_H
