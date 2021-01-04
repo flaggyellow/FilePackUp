@@ -54,6 +54,7 @@ void MainWindow::convert_start()
 {
     QString source_path = ui->convert_input_source->text();
     QString target_path = ui->convert_input_target->text();
+    bool useHuffman = ui->convert_radioButton->isChecked();
     if((checkValidLocation(source_path, 1)<0) || (checkValidLocation(target_path, 0)<0))
     {
         QMessageBox::information(this, QString::fromLocal8Bit("错误"), QString::fromLocal8Bit("源路径或目标路径有误"));
@@ -63,7 +64,8 @@ void MainWindow::convert_start()
     QStringList filePaths = source_path.split(';');
 
     TarArchive tarArchive(target_path + "/pack.tar");
-    // HuffmanTree huffman();
+
+    HuffmanTree huffman;
 
     int fileptr = 0;
     while(fileptr < filePaths.length())
@@ -72,8 +74,17 @@ void MainWindow::convert_start()
         fileptr++;
     }
     std::cout << "The file nodes successfully loaded." << std::endl;
-    tarArchive.save(0);
-    ui->convert_status_label->setText(QString::fromLocal8Bit("已打包完成！"));
+    if(!useHuffman)
+    {
+        tarArchive.save(0);
+        ui->convert_status_label->setText(QString::fromLocal8Bit("已打包完成！"));
+    }
+    else
+    {
+        tarArchive.save(1);
+        huffman.encodeFile(target_path + "/pack.tar", target_path + "/compress.tar");
+        ui->convert_status_label->setText(QString::fromLocal8Bit("已压缩完成！"));
+    }
     return;
 }
 
@@ -92,8 +103,24 @@ void MainWindow::recover_start(){
         ui->recover_status_label->setText(QString::fromLocal8Bit("请重新选择源路径 "));
         return;
     }
-    TarArchive tarArchive(source_path);
-    tarArchive.load(target_path);
-    ui->recover_status_label->setText(QString::fromLocal8Bit("解包已完成！"));
+    if(checkMagic(source_path) == 1)
+    {
+        TarArchive tarArchive(source_path);
+        tarArchive.load(target_path, 1);
+        ui->recover_status_label->setText(QString::fromLocal8Bit("解包已完成！"));
+    }
+    else if(checkMagic(source_path) == 2)
+    {
+        HuffmanTree Huffman;
+        QString pack_path = source_path + ".tmp";
+        Huffman.decodeFile(source_path, pack_path);
+        TarArchive tarArchive(pack_path);
+        tarArchive.load(target_path, 2);
+        ui->recover_status_label->setText(QString::fromLocal8Bit("解压已完成！"));
+    }
+    else
+    {
+        std::cerr << "unknown magic word..." << std::endl;
+    }
     return;
 }

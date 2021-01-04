@@ -18,19 +18,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     file_helper.cpp \
     file_node.cpp \
+    huffman_tree.cpp \
     main.cpp \
     mainwindow.cpp \
     tar_archive.cpp \
     tar_contents.cpp \
-    tools.cpp
+    tools.cpp \
+    tree_node.cpp
 
 HEADERS += \
     file_helper.h \
     file_node.h \
+    huffman_tree.h \
     mainwindow.h \
     tar_archive.h \
     tar_contents.h \
-    tools.h
+    tools.h \
+    tree_node.h
 
 FORMS += \
     mainwindow.ui

@@ -14,7 +14,7 @@
 class TarArchive
 {
 public:
-    int load(QString fileDir);
+    int load(QString fileDir, int mode);
     int save(int mode);
     int add(QString filePath);
     TarArchive(QString fileDir);

@@ -10,6 +10,7 @@
 #include "file_helper.h"
 #include "tools.h"
 #include <iostream>
+#include "huffman_tree.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

@@ -4,6 +4,7 @@
 #include <QStringList>
 #include <QFile>
 #include <QFileInfo>
+#include <QDataStream>
 #include <cstring>
 #include <vector>
 #include <cmath>
@@ -18,5 +19,7 @@ int cpQs2Ca(char *to, QString qs);
 int fillOctCa(char *to, long long num);
 bool isEmptyBlock(char *datablock, int size);
 int checkMagic(char *magic);
-
+int checkMagic(QString file_path);
+char create_byte(char* buffer);
+char get_bit(char *buffer, int ptr);
 #endif // TOOLS_H
