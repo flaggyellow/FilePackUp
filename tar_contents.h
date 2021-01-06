@@ -32,7 +32,8 @@ struct TarHeader
     char devmajor[8];
     char devminor[8];
     char prefix[155];
-    char padding[12];
+    char isNameTooLong[4];
+    char padding[8];
 };
 
 class TarContents
@@ -58,6 +59,7 @@ public:
 private:
     struct TarHeader *header;
     FileHelper file;
+    QString tooLongName;
 };
 
 #endif // TAR_CONTENTS_H

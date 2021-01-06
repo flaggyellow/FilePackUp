@@ -95,14 +95,24 @@ int HuffmanTree::createHuffmanTree()
 
 int HuffmanTree::encodeFile(QString file_path, QString target_path)
 {
+    QProgressDialog progress;
+    progress.setFixedWidth(600);
+    progress.setMinimumDuration(0);
+    progress.setRange(0,100);
+    progress.setAutoClose(true);
+    progress.setWindowTitle(QString::fromLocal8Bit("压缩进度"));
+    progress.setLabel(new QLabel(QString::fromLocal8Bit("正在压缩...")));
+    progress.setWindowModality(Qt::WindowModal);
+    progress.open();
+    progress.setValue(0);
     char byte;
     char bit_buffer[16];
 
     QFile pack(file_path);
+    qint64 pack_size = pack.size();
 
     // 统计打包文件的词频
     this->countFrequency(pack);
-
     // 创建哈夫曼树
     this->createHuffmanTree();
 
@@ -127,6 +137,7 @@ int HuffmanTree::encodeFile(QString file_path, QString target_path)
     // 魔数，用于区分不同的tar文件
     char magic[8] = {'H', 'U', 'F', 'F', 'M', 'A', 'N', 0};
     out.writeRawData(magic, 8);
+
     for(int i = 0; i < 256; i++)
     {
         if(this->nodeTable[i].getCode().compare("") == 0 && i!=255) continue;
@@ -138,9 +149,13 @@ int HuffmanTree::encodeFile(QString file_path, QString target_path)
     }
 
     int buffer_ptr = 0;
+    qint64 read_size = 0;
     while(!pack.atEnd())
     {
         in.readRawData(&byte, 1);
+        read_size++;
+        if((read_size*100/pack_size) > ((read_size-1)*100/pack_size))
+            progress.setValue((100 * read_size) / pack_size);
         unsigned char ubyte;
         memcpy(&ubyte, &byte, 1);
         QString code = this->nodeTable[ubyte].getCode();
@@ -176,6 +191,7 @@ int HuffmanTree::encodeFile(QString file_path, QString target_path)
         out.writeRawData(&byte, 1);
     }
     std::cout << "Compress finished." << std::endl;
+    progress.setValue(100);
     pack.close();
     tar.close();
     pack.remove();
@@ -196,6 +212,16 @@ int manageCode(TreeNode *head, QString head_code)
 
 int HuffmanTree::decodeFile(QString file_path, QString target_path)
 {
+    QProgressDialog progress;
+    progress.setFixedWidth(600);
+    progress.setMinimumDuration(0);
+    progress.setRange(0,100);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.setAutoClose(true);
+    progress.setWindowTitle(QString::fromLocal8Bit("解压进度"));
+    progress.setLabel(new QLabel(QString::fromLocal8Bit("正在解压...")));
+    progress.open();
+    progress.setValue(0);
     QFile tar(file_path);
     if (!tar.open(QIODevice::ReadOnly))
     {
@@ -204,6 +230,8 @@ int HuffmanTree::decodeFile(QString file_path, QString target_path)
         return -1;
     }
     QDataStream in(&tar);
+
+    qint64 tar_size = tar.size();
 
     QFile pack(target_path);
     // open a empty tar file
@@ -237,7 +265,6 @@ int HuffmanTree::decodeFile(QString file_path, QString target_path)
         this->nodeTable[static_cast<unsigned char>(huffman_buffer[0])].setCode(code);
         hbptr = 0;
     }
-
     TreeNode *tchead = new TreeNode();
     this->treeHead = tchead;
     make_child(tchead);
@@ -246,6 +273,7 @@ int HuffmanTree::decodeFile(QString file_path, QString target_path)
     int dbptr = 0;
     TreeNode *treeptr = tchead;
     in.readRawData(dbuffer, 1);
+    qint64 read_size = 1;
     while(!in.atEnd())
     {
         char bit = get_bit(dbuffer, dbptr);
@@ -260,9 +288,22 @@ int HuffmanTree::decodeFile(QString file_path, QString target_path)
             treeptr = tchead;
         }
         dbptr++;
-        if(dbptr == 8) in.readRawData(dbuffer+1, 1);
-        if(dbptr == 16){ in.readRawData(dbuffer, 1); dbptr = 0;}
+        if(dbptr == 8)
+        {
+            in.readRawData(dbuffer+1, 1);
+            read_size++;
+            if((read_size*100/tar_size) > ((read_size-1)*100/tar_size))
+                progress.setValue(((read_size*100) / tar_size));
+        }
+        if(dbptr == 16)
+        {
+            in.readRawData(dbuffer, 1);
+            dbptr = 0; read_size++;
+            if((read_size*100/tar_size) > ((read_size-1)*100/tar_size))
+                progress.setValue(((100*read_size) / tar_size));
+        }
     }
+    progress.setValue(100);
     pack.close();
     tar.close();
     return 0;

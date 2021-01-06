@@ -7,6 +7,8 @@
 #include "file_node.h"
 #include <QByteArray>
 #include "tools.h"
+#include <QProgressDialog>
+#include <QLabel>
 
 #define BLOCKSIZE 512
 

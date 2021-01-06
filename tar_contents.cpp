@@ -10,7 +10,13 @@ TarContents::TarContents(QString filePath, int type)
     header = static_cast<struct TarHeader*>(malloc(sizeof(struct TarHeader)));
     std::memset(header, 0, sizeof(TarHeader));
     QFileInfo info(filePath);
-    cpQs2Ca(header->fileName, filePath);
+    int length_safety = cpQs2Ca(header->fileName, filePath);
+    if(length_safety < 0)
+    {
+        unsigned char ff[4] = {0xff, 0xff, 0xff, 0xff};
+        memcpy(header->isNameTooLong, ff, 4);
+        this->tooLongName = filePath;
+    }
     qint64 file_size = info.size();
     // fillOctCa(header->size, file_size);
     memcpy(header->size, &file_size, 8);

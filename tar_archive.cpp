@@ -194,6 +194,16 @@ int TarArchive::load(QString fileDir, int mode)
 
 int TarArchive::RLE(QString filePath, QString target_path)
 {
+    QProgressDialog progress;
+    progress.setFixedWidth(600);
+    progress.setMinimumDuration(0);
+    progress.setRange(0,100);
+    progress.setAutoClose(true);
+    progress.setWindowTitle(QString::fromLocal8Bit("压缩进度"));
+    progress.setLabel(new QLabel(QString::fromLocal8Bit("正在压缩...")));
+    progress.setWindowModality(Qt::WindowModal);
+    progress.open();
+    progress.setValue(0);
     QFile pack(filePath);
     if (!pack.open(QIODevice::ReadOnly))
     {
@@ -222,10 +232,13 @@ int TarArchive::RLE(QString filePath, QString target_path)
     in.readRawData(&read_buffer, 1);
     char current = read_buffer;
     unsigned char count = 1;
-
+    qint64 pack_size = pack.size();
+    qint64 read_size = 0;
     while(!pack.atEnd())
     {
         in.readRawData(&read_buffer, 1);
+        read_size++;
+        progress.setValue(100 * read_size / pack_size);
 
         if(read_buffer == current)
         {
@@ -257,6 +270,16 @@ int TarArchive::RLE(QString filePath, QString target_path)
 
 int TarArchive::deRLE(QString filePath, QString target_path)
 {
+    QProgressDialog progress;
+    progress.setFixedWidth(600);
+    progress.setMinimumDuration(0);
+    progress.setRange(0,100);
+    progress.setAutoClose(true);
+    progress.setWindowTitle(QString::fromLocal8Bit("解压进度"));
+    progress.setLabel(new QLabel(QString::fromLocal8Bit("正在解压...")));
+    progress.setWindowModality(Qt::WindowModal);
+    progress.open();
+    progress.setValue(0);
     QFile tar(filePath);
     if (!tar.open(QIODevice::ReadOnly))
     {
@@ -283,10 +306,13 @@ int TarArchive::deRLE(QString filePath, QString target_path)
     char read_buffer[2];
     char current;
     unsigned char count;
-
+    qint64 tar_size = tar.size();
+    qint64 read_size = 0;
     while(!tar.atEnd())
     {
         in.readRawData(read_buffer, 2);
+        read_size += 2;
+        progress.setValue(100 * read_size / tar_size);
         current = read_buffer[1];
         memcpy(&count, read_buffer, 1);
         while(count != 0)

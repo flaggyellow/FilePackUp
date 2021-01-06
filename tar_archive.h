@@ -5,6 +5,8 @@
 #include "file_helper.h"
 #include <iostream>
 #include <QDataStream>
+#include <QProgressDialog>
+#include <QLabel>
 
 #define BLOCKSIZE 512
 

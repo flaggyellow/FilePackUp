@@ -41,6 +41,7 @@ bool isDir(QString filepath)
 
 int cpQs2Ca(char *to, QString qs)
 {
+    if(qs.length() > 100) return -1;
     std::string str = qs.toStdString();
     std::strcpy(to, str.c_str());
     return 0;
