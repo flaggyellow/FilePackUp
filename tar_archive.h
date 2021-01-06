@@ -17,6 +17,8 @@ public:
     int load(QString fileDir, int mode);
     int save(int mode);
     int add(QString filePath);
+    int RLE(QString filePath, QString target_path);
+    int deRLE(QString filePath, QString target_path);
     TarArchive(QString fileDir);
 //    TarArchive();
     ~TarArchive();

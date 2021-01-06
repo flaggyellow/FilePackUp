@@ -29,13 +29,17 @@ public slots:
     void fetch_file_path_convert_target();
     void fetch_file_path_recover_source();
     void fetch_file_path_recover_target();
+    void get_fold_contents_source();
+    void get_fold_contents_target();
     void convert_start();
     void recover_start();
+    void verify_start();
 //    void recover_start();
 //    void verify_start();
 
 private:
     Ui::MainWindow *ui;
     QString fetch_file_path(int mode);
+    QStringList get_fold_contents(QString DirPath);
 };
 #endif // MAINWINDOW_H

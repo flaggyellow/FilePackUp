@@ -186,9 +186,117 @@ int TarArchive::load(QString fileDir, int mode)
     delete q;
     p->set_next(nullptr);
     tar->close();
-    tar->remove();
+    if(mode == 2 || mode == 3) tar->remove();
 
     std::cout << "recover finished." << std::endl << std::endl;
+    return 0;
+}
+
+int TarArchive::RLE(QString filePath, QString target_path)
+{
+    QFile pack(filePath);
+    if (!pack.open(QIODevice::ReadOnly))
+    {
+        std::cerr << "Cannot open file for reading: "
+                  << qPrintable(pack.errorString()) << std::endl;
+        return -1;
+    }
+    QDataStream in(&pack);
+
+    QFile tar(target_path);
+    // open a empty tar file
+    if (!tar.open(QIODevice::WriteOnly))
+    {
+        std::cerr << "Cannot open file for writing: "
+                  << qPrintable(tar.errorString()) << std::endl;
+        return -1;
+    }
+    // the write stream
+    QDataStream out(&tar);
+
+    // 魔数，用于区分不同的tar文件
+    char magic[8] = {'R', 'U', 'N', 'L', 'E', 'N', 'G', 0};
+    out.writeRawData(magic, 8);
+
+    char read_buffer;
+    in.readRawData(&read_buffer, 1);
+    char current = read_buffer;
+    unsigned char count = 1;
+
+    while(!pack.atEnd())
+    {
+        in.readRawData(&read_buffer, 1);
+
+        if(read_buffer == current)
+        {
+            if(count == 0xff)
+            {
+                out.writeRawData(reinterpret_cast<char *>(&count), 1);
+                out.writeRawData(&current, 1);
+                count = 0;
+            }
+            count++;
+        }
+        else
+        {
+            out.writeRawData(reinterpret_cast<char *>(&count), 1);
+            out.writeRawData(&current, 1);
+            count = 1;
+            current = read_buffer;
+        }
+    }
+
+    pack.close();
+    tar.close();
+    pack.remove();
+
+    std::cout << "Compress finished." << std::endl;
+
+    return 0;
+}
+
+int TarArchive::deRLE(QString filePath, QString target_path)
+{
+    QFile tar(filePath);
+    if (!tar.open(QIODevice::ReadOnly))
+    {
+        std::cerr << "Cannot open file for reading: "
+                  << qPrintable(tar.errorString()) << std::endl;
+        return -1;
+    }
+    QDataStream in(&tar);
+
+    QFile pack(target_path);
+    if (!pack.open(QIODevice::WriteOnly))
+    {
+        std::cerr << "Cannot open file for writing: "
+                  << qPrintable(pack.errorString()) << std::endl;
+        return -1;
+    }
+    // the write stream
+    QDataStream out(&pack);
+
+    // 读取魔数
+    char magic[8];
+    in.readRawData(magic, 8);
+
+    char read_buffer[2];
+    char current;
+    unsigned char count;
+
+    while(!tar.atEnd())
+    {
+        in.readRawData(read_buffer, 2);
+        current = read_buffer[1];
+        memcpy(&count, read_buffer, 1);
+        while(count != 0)
+        {
+            out.writeRawData(&current, 1);
+            count--;
+        }
+    }
+    pack.close();
+    tar.close();
     return 0;
 }
 
